@@ -8,7 +8,7 @@ import numpy as np
 slim = tf.contrib.slim
 import cv2
 
-from label import *
+from label_loader import *
 
 image_dir = './dataset/testimg/'
 images_list = sorted([os.path.join(image_dir, file) for file in os.listdir(image_dir) if file.endswith('.png')])
@@ -19,41 +19,14 @@ checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
 num_initial_blocks = 1
 skip_connections = False
 stage_two_repeat = 2
+
+load_label(os.path.abspath('./labels/camvid_label.mat'))
+
 '''
 #Labels to colours are obtained from here:
 https://github.com/alexgkendall/SegNet-Tutorial/blob/c922cc4a4fcc7ce279dd998fb2d4a8703f34ebd7/Scripts/test_segmentation_camvid.py
 
 However, the road_marking class is collapsed into the road class in the dataset provided.
-
-Classes:
-------------
-Sky = [128,128,128]
-Building = [128,0,0]
-Pole = [192,192,128]
-Road_marking = [255,69,0]
-Road = [128,64,128]
-Pavement = [60,40,222]
-Tree = [128,128,0]
-SignSymbol = [192,128,128]
-Fence = [64,64,128]
-Car = [64,0,128]
-Pedestrian = [64,64,0]
-Bicyclist = [0,128,192]
-Unlabelled = [0,0,0]
-'''
-'''
-label_to_colours =    {0: [128,128,128],
-                     1: [128,0,0],
-                     2: [192,192,128],
-                     3: [128,64,128],
-                     4: [60,40,222],
-                     5: [128,128,0],
-                     6: [192,128,128],
-                     7: [64,64,128],
-                     8: [64,0,128],
-                     9: [64,64,0],
-                     10: [0,128,192],
-                     11: [0,0,0]}
 '''
 
 #Create the photo directory

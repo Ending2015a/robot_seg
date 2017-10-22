@@ -19,6 +19,7 @@ flags.DEFINE_string('logdir', './log/original', 'The log directory to save your 
 flags.DEFINE_boolean('save_images', True, 'Whether or not to save your images.')
 flags.DEFINE_boolean('combine_dataset', False, 'If True, combines the validation with the train dataset.')
 
+
 #Training arguments
 flags.DEFINE_integer('num_classes', 12, 'The number of classes to predict.')
 flags.DEFINE_integer('batch_size', 4, 'The batch_size for training.')
