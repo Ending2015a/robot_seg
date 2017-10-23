@@ -10,10 +10,13 @@ import cv2
 
 from label_loader import *
 
+os.environ['CUDA_VISIBLE_DEVICES']='0'
+
+
 image_dir = './dataset/testimg/'
 images_list = sorted([os.path.join(image_dir, file) for file in os.listdir(image_dir) if file.endswith('.png')])
 
-checkpoint_dir = "./log/train_original_ENet"
+checkpoint_dir = "./weights/ade20k_combine_5"
 checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
 
 num_initial_blocks = 1

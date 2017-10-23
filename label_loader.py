@@ -1,7 +1,10 @@
 import cv2
 import numpy as np
 import math
+import scipy.io as sio
+import tensorflow as tf
 
+dataset = tf.contrib.data.Dataset
 '''
 #Labels to colours are obtained from here:
 https://github.com/alexgkendall/SegNet-Tutorial/blob/c922cc4a4fcc7ce279dd998fb2d4a8703f34ebd7/Scripts/test_segmentation_camvid.py
@@ -25,7 +28,28 @@ Bicyclist = [0,128,192]
 Unlabelled = [0,0,0]
 '''
 
+#==========COMBINE LABEL==============
+combine_list = []
+tf_combine_list=None
 
+def load_combine_list(path):
+    global combine_list
+    global tf_combine_list
+    combine_list = np.array(sio.loadmat(path)['list'][0])
+    tf_combine_list = tf.convert_to_tensor(combine_list)
+
+def tf_combine_annotation(anno):
+    if tf_combine_list == None:
+        return anno
+    anno = tf_combine_list[anno]
+    #anno = tf.map_fn(lambda x: tf_combine_list[x], anno)
+    return anno
+    
+
+
+
+
+#===========LABEL VISUALIZER==============
 
 font_scale = 0.5
 font_Face = cv2.FONT_HERSHEY_SIMPLEX
