@@ -10,7 +10,7 @@ import cv2
 
 from label_loader import *
 
-os.environ['CUDA_VISIBLE_DEVICES']='0'
+#os.environ['CUDA_VISIBLE_DEVICES']=0
 
 
 image_dir = './dataset/testimg/'
@@ -22,8 +22,11 @@ checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
 num_initial_blocks = 1
 skip_connections = False
 stage_two_repeat = 2
+num_classes = 5
 
-load_label(os.path.abspath('./labels/camvid_label.mat'))
+
+label_to_colours, label_to_texts = load_label(os.path.abspath('./labels/ade20k_combine_5_label.mat'))
+
 
 '''
 #Labels to colours are obtained from here:
@@ -63,7 +66,7 @@ with tf.Graph().as_default() as graph:
     #Create the model inference
     with slim.arg_scope(ENet_arg_scope()):
         logits, probabilities = ENet(images,
-                                     num_classes=12,
+                                     num_classes=num_classes,
                                      batch_size=1,
                                      is_training=True,
                                      reuse=None,

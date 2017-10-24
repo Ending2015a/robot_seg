@@ -33,8 +33,6 @@ combine_list = []
 tf_combine_list=None
 
 def load_combine_list(path):
-    global combine_list
-    global tf_combine_list
     combine_list = np.array(sio.loadmat(path)['list'][0])
     tf_combine_list = tf.convert_to_tensor(combine_list)
 
@@ -55,31 +53,9 @@ font_scale = 0.5
 font_Face = cv2.FONT_HERSHEY_SIMPLEX
 
 #rgb
-label_to_colours =    [[128,128,128],
-                     [128,0,0],
-                     [192,192,128],
-                     [128,64,128],
-                     [60,40,222],
-                     [128,128,0],
-                     [192,128,128],
-                     [64,64,128],
-                     [64,0,128],
-                     [64,64,0],
-                     [0,128,192],
-                     [0,0,0]]
+label_to_colours = []
 
-label_to_texts = ['Sky',
-                'Building',
-                'Pole',
-                'Road',
-                'Pavement',
-                'Tree',
-                'SignSymbol',
-                'Fence',
-                'Car',
-                'Pedestrian',
-                'Bicyclist',
-                'Unlabelled']
+label_to_texts = []
 
 def get_label_max_length(label, texts):
     size = len(label)
@@ -149,6 +125,8 @@ def draw_label(label, texts):
     return img
 
 def output_label(seg_img, path):
+    global label_to_colours
+    global label_to_texts
     color_idx = np.unique(seg_img).astype(int)
     color_list = []
     text_list = []
@@ -171,6 +149,8 @@ def load_label(mat_file):
     global label_to_texts
     label_to_colours = mat['colors']
     label_to_texts = mat['names']
+
+    return label_to_colours, label_to_texts
 
 if __name__ == '__main__':
     import argparse

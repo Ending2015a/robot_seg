@@ -34,7 +34,7 @@ flags.DEFINE_integer('num_epochs', 300, "The number of epochs to train your mode
 flags.DEFINE_integer('num_epochs_before_decay', 100, 'The number of epochs before decaying your learning rate.')
 flags.DEFINE_float('weight_decay', 2e-4, "The weight decay for ENet convolution layers.")
 flags.DEFINE_float('learning_rate_decay_factor', 1e-4, 'The learning rate decay factor.')
-flags.DEFINE_float('initial_learning_rate', 1e-3, 'The initial learning rate for your training.')
+flags.DEFINE_float('initial_learning_rate', 3e-3, 'The initial learning rate for your training.')
 flags.DEFINE_string('weighting', "", 'Choice of Median Frequency Balancing or the custom ENet class weights.')
 flags.DEFINE_string('use_gpu', '0,1', 'Choice of GPU number use to train')
 
@@ -197,13 +197,21 @@ def run():
         global_step = get_or_create_global_step()
 
         #Define your exponentially decaying learning rate
+        lr = tf.train.polynomial_decay(
+            learning_rate = initial_learning_rate,
+            global_step = global_step,
+            decay_steps = decay_steps,
+            end_learning_rate=1e-6,
+            power=0.99)
+
+        '''
         lr = tf.train.exponential_decay(
             learning_rate = initial_learning_rate,
             global_step = global_step,
             decay_steps = decay_steps,
             decay_rate = learning_rate_decay_factor,
             staircase = True)
-
+        '''
         #Now we can define the optimizer that takes on the learning rate
         optimizer = tf.train.AdamOptimizer(learning_rate=lr, epsilon=epsilon)
 
